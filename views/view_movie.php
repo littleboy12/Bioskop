@@ -125,20 +125,20 @@
             <tbody>
               <tr>
                 <td style="width: 125px">Seat </td>
-                <td>Seat </td>
+                <td id="dataSeat">Seat </td>
               </tr>
               <tr>
                 <td style="width: 125px">Jam </td>
-                <td>Jam </td>
+                <td id="dateTime">Jam </td>
               </tr>
               <tr>
                 <td style="width: 125px">Harga </td>
-                <td>Rp </td>
+                <td id="price">Rp </td>
               </tr>
             </tbody>
           </table>
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Checkout</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="checkOut">Checkout</button>
             <button type="button" class="btn btn-sm btn-outline-danger" onclick="closeDetailBook()">Close</button>
           </div>
         </div>

@@ -1,6 +1,10 @@
 var tickets = [];
 var get_id_movie = null;
-
+var seat = []
+var studio = null;
+var datetime = null;
+var price = null;
+var harga = null;
 function getDataJadwal(id_movie) {
   closeDetail();
   get_id_movie = id_movie;
@@ -22,7 +26,7 @@ function getDataJadwal(id_movie) {
 
       data.forEach((jadwal) => {
         result.innerHTML = `
-          <button class="btn btn-outline-primary rounded justify-content-center align-items-center d-flex" style="height: 25px" onclick="getTickets(${jadwal.schedule_id})">
+          <button class="btn btn-outline-primary rounded justify-content-center align-items-center d-flex" style="height: 25px" onclick="getTickets(${jadwal.schedule_id}, '${jadwal.show_time}')">
               <span>${jadwal.show_time}</span>
           </button>
           `;
@@ -30,7 +34,8 @@ function getDataJadwal(id_movie) {
     });
 }
 
-function getTickets(id_jadwal) {
+function getTickets(id_jadwal, datetime_jadwal) {
+  datetime = datetime_jadwal;
   console.log("ID jadwal:", id_jadwal);
 
   fetch(`http://localhost/xx2Cinema/services/Seats.php?tickets=${id_jadwal}`)
@@ -42,9 +47,14 @@ function getTickets(id_jadwal) {
     })
     .then((data) => {
       console.log("tiket Di terima:", data);
+      if (data.length === 0) {
+        alert("Tiket Belum Di Jual");
+        return;
+      }
       tickets = data;
       getDataSeat();
     });
+    updateData();
 }
 
 function getDataSeat() {
@@ -70,6 +80,11 @@ function displaySeats(data) {
 
   let row;
 
+  result.innerHTML = "";
+  if (tickets.length == 0) {
+    result.innerHTML = ' '
+    return
+  }
   data.forEach((seat, index) => {
     if (index % maxColumns === 0) {
       row = document.createElement("div");
@@ -78,27 +93,79 @@ function displaySeats(data) {
     }
 
     const isBooked = tickets.some((ticket) => ticket.seat_id === seat.seat_id && ticket.status === "booked");
+    const celStuido = tickets.some((ticket) => ticket.studio_id === seat.studio_id);
 
     const col = document.createElement("div");
 
-    col.className = "col-sm";
-    col.innerHTML = `
-          <button class="btn ${isBooked ? 'btn-outline-warning' : 'btn-warning'} rounded justify-content-center align-items-center d-flex" onclick="soldOut(${isBooked})" style="width: 50px; height: 50px">
-              <span>${seat.seat_number}</span>
-          </button>
-          `;
-    row.appendChild(col);
+    if(celStuido) {
+      col.className = "col-sm";
+      col.innerHTML = `
+            <button class="btn ${isBooked ? 'btn-outline-warning' : 'btn-warning'} rounded justify-content-center align-items-center d-flex" onclick="soldOut(${isBooked}, '${seat.seat_number}', ${seat.seat_id})" style="width: 50px; height: 50px">
+                <span>${seat.seat_number}</span>
+            </button>
+            `;
+      row.appendChild(col);
+    }
   });
 }
 
-function soldOut(isBooked) {
+function soldOut(isBooked, seatNumber, seatId) {
     console.log("isBooked", isBooked);
     
-    if(!isBooked) {
+    var status = true;
+    if(isBooked) {
         alert("Seat is already booked");
     } else {
-        alert("Seat is already booked");
+      seat.forEach(data => {
+        if(data.seat_id === seatId) {
+          status = false;
+        }
+      })
+      if (!status) {
+        const res = confirm("Seat Sudah Di Masukan, Apakah Ingin Di Batalkan ?");
+        if (res) {
+          seat = seat.filter(data => data.seat_id!== seatId);
+        }
+      } else {
+        const ticket = tickets.find(ticket => ticket.seat_id == seatId)
+        console.log("Studionya", ticket.studio_id);
+        studio = ticket.studio_id
+        harga = ticket.price
+        
+        seat.push({
+          seat_id: seatId,
+          seat_number: seatNumber,
+        });
+      }
+      updateData();
     }
+}
+
+function updateData(){
+  const dataSeat = document.getElementById("dataSeat");
+  const datetimeDisplay = document.getElementById("dateTime");
+  const price = document.getElementById("price");
+
+  console.log("datetime", datetime);
+  console.log("seatBook", seat);
+  console.log("studio", studio);
+  console.log("harga", harga);
+  
+  price.innerHTML = `Rp ${harga * seat.length}`;
+  dataSeat.innerHTML = "";
+  seat.forEach((seat) => {
+    dataSeat.innerHTML += `
+    <span>${seat.seat_number}</span>
+    `;
+  })
+  datetimeDisplay.innerHTML = datetime;
+
+  const btnCheckout = document.getElementById("checkOut")
+  btnCheckout.addEventListener("click", function() {
+    if (seat.length > 0) {
+      buyTickets();
+    }
+  })
 }
 
 function closeDetailBook() {
@@ -106,5 +173,17 @@ function closeDetailBook() {
     detail.classList.add("d-none");
     tickets = [];
     get_id_movie = null;
+    seat = []
+    studio = null;
+    datetime = null;
+    price = 0;
+    studio = null;
+    getDataSeat();
+    updateData();
     console.log("close");
   }
+
+
+function buyTickets() {
+  
+}
