@@ -6,6 +6,7 @@ var datetime = null;
 var price = null;
 var harga = null;
 var id_ticket = [];
+var totalBayar = 0;
 function getDataJadwal(id_movie) {
   closeDetail();
   get_id_movie = id_movie;
@@ -161,6 +162,7 @@ function updateData() {
   console.log("studio", studio);
   console.log("harga", harga);
 
+  totalBayar = harga * seat.length
   price.innerHTML = `Rp ${harga * seat.length}`;
   dataSeat.innerHTML = "";
   seat.forEach((seat) => {
@@ -173,6 +175,8 @@ function updateData() {
 
 function closeDetailBook() {
   const detail = document.getElementById("buyTickets");
+  const bayar = document.getElementById("bayar");
+  bayar.classList.add("d-none");
   detail.classList.add("d-none");
   tickets = [];
   get_id_movie = null;
@@ -181,9 +185,32 @@ function closeDetailBook() {
   datetime = null;
   price = 0;
   studio = null;
+  id_ticket = [];
+  totalBayar = 0;
   getDataSeat();
   updateData();
   console.log("close");
+}
+
+function payTickets () {
+  const bayar = document.getElementById("bayar");
+  const detail = document.getElementById("buyTickets");
+  detail.classList.add("d-none");
+  bayar.classList.remove("d-none");
+
+  const total = document.getElementById("totalPrice");
+  total.innerHTML = `Rp ${totalBayar}`;
+
+  const pay = document.getElementById("inpBayar");
+
+  const btnBayar = document.getElementById("bayarSekarang");
+  btnBayar.addEventListener("click", function () {
+    if (pay.value < totalBayar) {
+      alert("Uang Anda Kurang");
+    } else {
+      buyTickets();
+    }
+  });
 }
 
 function buyTickets() {
@@ -231,4 +258,6 @@ function buyTickets() {
     .catch((error) => {
       alert("Data Berhasil Di Tambahkan"); // Tampilkan error spesifik
     });
+
+    closeDetailBook();
 }

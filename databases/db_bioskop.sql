@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 25, 2024 at 12:25 PM
+-- Generation Time: Dec 26, 2024 at 08:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -141,13 +141,13 @@ CREATE TABLE `tickets` (
 --
 
 INSERT INTO `tickets` (`ticket_id`, `schedule_id`, `seat_id`, `status`) VALUES
-(1, 1, 1, 'available'),
+(1, 1, 1, 'booked'),
 (2, 1, 2, 'booked'),
 (3, 1, 3, 'available'),
 (4, 1, 4, 'available'),
 (5, 1, 5, 'booked'),
-(6, 2, 6, 'available'),
-(7, 2, 7, 'available'),
+(6, 2, 6, 'booked'),
+(7, 2, 7, 'booked'),
 (8, 2, 8, 'booked'),
 (9, 2, 9, 'available'),
 (10, 2, 10, 'booked');
@@ -163,18 +163,21 @@ CREATE TABLE `transactions` (
   `user_id` int(11) DEFAULT NULL,
   `ticket_id` int(11) DEFAULT NULL,
   `transaction_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `total_price` decimal(10,2) DEFAULT NULL
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `status` enum('Sudah','Belum') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transactions`
 --
 
-INSERT INTO `transactions` (`transaction_id`, `user_id`, `ticket_id`, `transaction_date`, `total_price`) VALUES
-(1, 2, 2, '2024-12-24 15:01:13', 50000.00),
-(2, 3, 5, '2024-12-24 15:01:13', 50000.00),
-(3, 4, 8, '2024-12-24 15:01:13', 60000.00),
-(4, 5, 10, '2024-12-24 15:01:13', 60000.00);
+INSERT INTO `transactions` (`transaction_id`, `user_id`, `ticket_id`, `transaction_date`, `total_price`, `status`) VALUES
+(2, 3, 5, '2024-12-24 15:01:13', 50000.00, 'Sudah'),
+(3, 4, 8, '2024-12-24 15:01:13', 60000.00, 'Sudah'),
+(4, 5, 10, '2024-12-24 15:01:13', 60000.00, 'Sudah'),
+(7, 2, 6, '2024-12-26 17:11:25', 60000.00, 'Sudah'),
+(8, 2, 7, '2024-12-26 17:11:25', 60000.00, 'Sudah'),
+(10, 2, 2, '2024-12-26 17:14:50', 50000.00, 'Sudah');
 
 -- --------------------------------------------------------
 
@@ -294,7 +297,7 @@ ALTER TABLE `tickets`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
