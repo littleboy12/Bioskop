@@ -138,7 +138,7 @@
             </tbody>
           </table>
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-secondary" id="checkOut">Checkout</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="buyTickets()">Checkout</button>
             <button type="button" class="btn btn-sm btn-outline-danger" onclick="closeDetailBook()">Close</button>
           </div>
         </div>
