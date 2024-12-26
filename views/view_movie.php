@@ -92,7 +92,10 @@
 
 <?php include "../layout/header.php" ?>
 <div class="container mt-4">
-  <input type="text" class="form-control mb-4" id="search" placeholder="Search movie title" onkeyup="searchMovies()">
+  <div class="d-flex justify-content-center align-items-center">
+    <input type="text" class="form-control mb-4" id="search" placeholder="Search movie title" onkeyup="searchMovies()">
+    <a href="view_daftar_beli.php" class="btn btn-outline-success btn-sm">Pembelian</a>
+  </div>
   <div class="row" id="filmList">
 
   </div>
@@ -138,11 +141,32 @@
             </tbody>
           </table>
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="buyTickets()">Checkout</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="payTickets()">Checkout</button>
             <button type="button" class="btn btn-sm btn-outline-danger" onclick="closeDetailBook()">Close</button>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="fixed-top w-100 h-100 d-flex justify-content-center align-items-center py-2 d-none" id="bayar" style="background-color:rgba(0, 0, 0, 0.34);">
+  <div class="film-detail-container">
+    <div class="film-card" id="filmCard">
+      <div class="card-body">
+        <div class="justify-content-center align-items-center d-flex">
+          <div>
+            <h4>Total Pembayaran : <span id="totalPrice">Rp </span></h4>
+            <input type="text" class="form-control mt-4" id="inpBayar" placeholder="Masukan Nominal Pembayaran">
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-outline-success" id="bayarSekarang">Bayar</button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="closeDetailBook()">Batal</button>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 </div>
