@@ -20,7 +20,7 @@ if(isset($_GET['Jadwal'])) {
 
 } else if(isset($_GET['tickets'])) {
     $id_jadwal = $_GET['tickets'];
-    $sql = mysqli_query($conn, "SELECT * FROM tickets INNER JOIN schedules ON tickets.schedule_id = schedules.schedule_id WHERE tickets.schedule_id = schedules.schedule_id = '$id_jadwal'");
+    $sql = mysqli_query($conn, "SELECT * FROM tickets INNER JOIN schedules ON tickets.schedule_id = schedules.schedule_id WHERE tickets.schedule_id = '$id_jadwal'");
     $data = [];
     if (mysqli_num_rows($sql) > 0) {
         while ($row = mysqli_fetch_assoc($sql)) {
