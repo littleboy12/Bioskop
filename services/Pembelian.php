@@ -4,6 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
+session_start();
 
 if (isset($_GET['Push'])) {
     $input = file_get_contents('php://input');
@@ -23,7 +24,7 @@ if (isset($_GET['Push'])) {
 
     try {
         // Ambil data dari request
-        $user = 2;  // ID user sementara
+        $user = $_SESSION['user_id'];  // ID user sementara
         $id_movie = $data['id_movie'];
         $seat = $data['seat_data'];
         $ticket = $data['ticket_id_data'];  // Array of ticket_id
@@ -38,8 +39,8 @@ if (isset($_GET['Push'])) {
                 $id_seat = $seat_item['seat_id'];
 
                 // Query untuk insert transaksi
-                $query = mysqli_query($conn, "INSERT INTO `transactions` (`user_id`, `ticket_id`, `total_price`) 
-                                              VALUES ('$user', '$id_ticket', '$harga')");
+                $query = mysqli_query($conn, "INSERT INTO `transactions` (`user_id`, `ticket_id`, `total_price`, `status`) 
+                                              VALUES ('$user', '$id_ticket', '$harga', 'Belum')");
 
                 if ($query) {
                     $query_trans = mysqli_query($conn, "SELECT ticket_id FROM transactions");

@@ -1,4 +1,13 @@
-<!-- Start of the film list card section -->
+
+
+<?php 
+include "../layout/header.php"; 
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+  header("Location: view_auth.php");
+}
+?>
 
 <style>
   .film-detail-container {
@@ -90,11 +99,10 @@
   }
 </style>
 
-<?php include "../layout/header.php" ?>
 <div class="container mt-4">
+  <h3><?= $_SESSION['nama']; ?></h3>
   <div class="d-flex justify-content-center align-items-center">
     <input type="text" class="form-control mb-4" id="search" placeholder="Search movie title" onkeyup="searchMovies()">
-    <a href="view_daftar_beli.php" class="btn btn-outline-success btn-sm">Pembelian</a>
   </div>
   <div class="row" id="filmList">
 
@@ -103,7 +111,9 @@
 <div class="fixed-top w-100 h-100 d-flex justify-content-center align-items-center py-2 d-none" id="detail" style="background-color:rgba(0, 0, 0, 0.34);">
   <div class="film-detail-container">
     <div class="film-card" id="filmCard">
-
+      <div class="card">
+        
+      </div>
     </div>
   </div>
 </div>
@@ -113,7 +123,7 @@
       <div class="card-body">
         <div class="justify-content-center align-items-center d-flex mb-3">
           <div class="row" id="jadwal">
-            <div class="col-sm">
+            <div class="col-sm">  
 
             </div>
           </div>

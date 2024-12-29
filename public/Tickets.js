@@ -66,7 +66,10 @@ function displayTickets(data) {
                       <div class="card-body">
                           <h3>${ticket.title}</h3>
                           <p class="card-text">${ticket.description}</p>
-                          <button class="btn btn-outline-success btn-sm" onclick="cetakTicket()">Cetak</button>
+                          <div class="btn-group">
+                            <button class="btn btn-outline-success btn-sm" onclick="cetakTicket()">Cetak</button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="refundData()">Refund</button>
+                          </div>
                       </div>
                   </div>
               </div>
@@ -74,6 +77,32 @@ function displayTickets(data) {
       result.appendChild(row);
     }
   });
+}
+
+function refundData() {
+  
+  const selectedTicket = confirm("Yakin Ingin Di Refund ? Uang akan di Kirim otomatis setelah 2 hari");
+  if (selectedTicket) {
+    console.log("DI HAPUS");
+    fetch("http://localhost/xx2Cinema/services/Tickets.php?refund", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        massage: "DI HAPUS",
+        push: idTrans,
+      }),
+    })
+    .then((response) => {
+      console.log("Status Response:", response.status);
+      return response.json(); // Selalu parse JSON meskipun error
+    })
+    .then((result) => {
+      console.log("Response Dihapus:", result);
+    })
+  }
+  getDataTickets();
 }
 
 function cetakTicket() {
@@ -148,6 +177,6 @@ function cetakTicket() {
           .then((result) => {
             console.log("Response JSON:", result);
           })
-        
+        getDataTickets();
     }
 }

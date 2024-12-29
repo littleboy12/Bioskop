@@ -1,5 +1,5 @@
 getDataMovies();
-
+  
 function getDataMovies() {
   fetch("http://localhost/xx2Cinema/services/Movies.php")
     .then((response) => {
@@ -81,7 +81,8 @@ function showDetail(id_movie) {
 
       data.forEach((film) => {
         result.innerHTML += `
-            <img id="filmPoster" src="${film.poster_url}" alt="Film Poster">
+            <img id="filmPoster" s
+            rc="${film.poster_url}" style = "hight: 200px" alt="Film Poster">
             <div class="card-body">
                 <h5 class="card-title" id="filmTitle">${film.title}</h5>
                 <p class="card-text" id="filmDescription">${film.description}</p>
